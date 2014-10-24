@@ -17,11 +17,19 @@ import java.util.List;
 public class SettingService {
     private SettingDao settingDao=new  SettingDao();
     
+    public String getSetting(String key){
+        return settingDao.getSetting(key);
+    }
+    
     public List<Setting> getSettings(){
         return settingDao.getSettings();
     }
     
     public void updateSetting(String key, String value) {
         settingDao.updateSetting(key, value);
+    }
+    
+    public void deleteSetting(String key){
+        settingDao.deleteSetting(key);
     }
 }

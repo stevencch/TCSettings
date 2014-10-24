@@ -36,32 +36,58 @@ public class SettingDao {
 
         return sessionFactory;
     }
-    
-    public SettingDao(){
-        configureSessionFactory();
-    }
 
-    public void updateSetting(String key, String value) {
-        
-        Session session = sessionFactory.getCurrentSession();
-        List<Setting> settings=(List<Setting>)session.createQuery("from Setting").list();
-        Setting setting=settings.stream().filter(x->x.getKey().equals(key)).findFirst().orElse(null);
-        if(setting!=null){
-            setting.setValue(value);
-            session.update(setting);
+    public SettingDao() {
+        configureSessionFactory();
+
+    }
+    
+    public String getSetting(String key){
+        String result="";
+        Session session = sessionFactory.openSession();
+        List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
+        Setting setting = settings.stream().filter(x -> x.getKey().equals(key)).findFirst().orElse(null);
+        if (setting != null) {
+            result=setting.getValue();
         }
-        else{
-            Setting newSetting=new Setting();
-            newSetting.setKey(key);
-            newSetting.setValue(value);
-            session.save(setting);
+        session.close();
+        return result;
+    }
+    
+    public void deleteSetting(String key){
+        Session session = sessionFactory.openSession();
+        List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
+        Setting setting = settings.stream().filter(x -> x.getKey().equals(key)).findFirst().orElse(null);
+        if (setting != null) {
+            session.delete(setting);
         }
         session.flush();
+        session.close();
     }
     
-    public List<Setting> getSettings(){
-        Session session = sessionFactory.getCurrentSession();
-        List<Setting> settings=(List<Setting>)session.createQuery("from Setting").list();
+
+    public void updateSetting(String key, String value) {
+
+        Session session = sessionFactory.openSession();
+        List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
+        Setting setting = settings.stream().filter(x -> x.getKey().equals(key)).findFirst().orElse(null);
+        if (setting != null) {
+            setting.setValue(value);
+            session.update(setting);
+        } else {
+            Setting newSetting = new Setting();
+            newSetting.setKey(key);
+            newSetting.setValue(value);
+            session.save(newSetting);
+        }
+        session.flush();
+        session.close();
+    }
+
+    public List<Setting> getSettings() {
+        Session session = sessionFactory.openSession();
+        List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
+        session.close();
         return settings;
     }
 }

@@ -4,13 +4,27 @@
         <servlet-name>SettingUpdateServlet</servlet-name>
         <servlet-class>com.oracle.rsp.tcsettings.web.SettingUpdateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SettingHandlerServlet</servlet-name>
+        <servlet-class>com.oracle.rsp.tcsettings.web.SettingHandlerServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SettingUpdateServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SettingHandlerServlet</servlet-name>
+        <url-pattern>/update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <resource-ref>
+        <description>Reviews Database</description>
+        <res-ref-name>jdbcmydb</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>
