@@ -15,12 +15,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author scao
  */
-public class SettingDao {
+@Repository
+public class SettingDao implements ISettingDao {
 
     private SessionFactory sessionFactory = null;
     private ServiceRegistry serviceRegistry = null;
@@ -42,6 +44,7 @@ public class SettingDao {
 
     }
     
+    @Override
     public String getSetting(String key){
         String result="";
         Session session = sessionFactory.openSession();
@@ -54,6 +57,7 @@ public class SettingDao {
         return result;
     }
     
+    @Override
     public void deleteSetting(String key){
         Session session = sessionFactory.openSession();
         List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
@@ -66,6 +70,7 @@ public class SettingDao {
     }
     
 
+    @Override
     public void updateSetting(String key, String value) {
 
         Session session = sessionFactory.openSession();
@@ -84,6 +89,7 @@ public class SettingDao {
         session.close();
     }
 
+    @Override
     public List<Setting> getSettings() {
         Session session = sessionFactory.openSession();
         List<Setting> settings = (List<Setting>) session.createQuery("from Setting").list();
